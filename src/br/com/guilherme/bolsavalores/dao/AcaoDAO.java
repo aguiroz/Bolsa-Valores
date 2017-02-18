@@ -23,7 +23,7 @@ public class AcaoDAO {
 	
 	private List<Acao> listaAcao;
 	
-	public List<Acao> listarAcoes(String symbol, Calendar start, Calendar end){
+	public List<Acao> listarAcao(String symbol, Calendar start, Calendar end){
 		
 		String query = montarQuery(symbol, start, end);
 		URL url;
@@ -58,25 +58,19 @@ public class AcaoDAO {
 				acao.setClose(close);
 				acao.setVolume(volume);
 				acao.setAdjClose(adjClose);
-			}
-			
+			}	
 		} catch (IOException | ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 		finally{
-			
 			scanner.close();
-		
 		}
 		
 		return listaAcao;
 	}
 	
-	private String montarQuery(String symbol, Calendar start,
-			Calendar end){
-
+	private String montarQuery(String symbol, Calendar start, Calendar end){
+		
 		StringBuilder query = new StringBuilder();
 		query.append("http://chart.finance.yahoo.com/table.csv?s=" + symbol);
 		query.append(".SA&a=" + start.get(Calendar.MONTH));

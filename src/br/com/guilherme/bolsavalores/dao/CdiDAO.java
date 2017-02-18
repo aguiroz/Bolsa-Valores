@@ -50,16 +50,17 @@ public class CdiDAO {
 		
 		while(start.getTimeInMillis() != end.getTimeInMillis()){
 			
-			String dataArquivo = String.valueOf(new SimpleDateFormat("yyyy/MM/dd").format(start.getTime()) + ".txt");
-			file = new File(pathFile + dataArquivo);
+			String dataArquivo = String.valueOf(new SimpleDateFormat("yyyyMMdd").format(start.getTime()));
+			file = new File(pathFile + dataArquivo + ".txt");
 			
-			if(!file.exists()){
+			if(!file.exists() && start.get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY && start.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY){
 				try {				
-					url = new URL(urlCdi + dataArquivo);
+					url = new URL(urlCdi + dataArquivo + ".txt");
+					System.out.println(url);
 					urlConnection = url.openConnection();
 					scanner = new Scanner(urlConnection.getInputStream());
 					if(scanner.hasNext()){
-						fileWriter = new FileWriter(file);
+						fileWriter = new FileWriter(pathFile + dataArquivo + ".txt");
 						printWriter = new PrintWriter(fileWriter);
 						printWriter.print(scanner.nextLine());
 						
@@ -111,4 +112,8 @@ public class CdiDAO {
 		
 		return listaCdi;
 	}
+	public static void main(String[] args) {
+		new CdiDAO().baixarCdi();
+	}
 }
+
